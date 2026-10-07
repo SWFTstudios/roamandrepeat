@@ -2,6 +2,11 @@
 
 Lean, mobile-first rebuild of [roamandrepeat.webflow.io](https://roamandrepeat.webflow.io/). Keeps the cloud parallax hero, floating image reveals, and gallery lightbox while cutting page weight dramatically.
 
+**Live:** [https://roamandrepeat.elombe.workers.dev](https://roamandrepeat.elombe.workers.dev)  
+**Repo:** [github.com/SWFTstudios/roamandrepeat](https://github.com/SWFTstudios/roamandrepeat)
+
+Pushes to `main` auto-build and deploy via Cloudflare Workers Builds (`npm run build` → `npx wrangler deploy`).
+
 ## Setup
 
 ```bash
@@ -10,6 +15,7 @@ npm run scrape   # pull published assets into source/
 npm run fonts    # download & subset Satoshi
 npm run build    # optimize images + emit dist/
 npm run dev      # preview dist/ at http://localhost:4173
+npm run deploy   # build + deploy to Cloudflare Workers
 ```
 
 ## Structure
