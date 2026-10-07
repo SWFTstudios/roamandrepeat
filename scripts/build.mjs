@@ -48,6 +48,15 @@ const IMAGE_JOBS = [
   { file: '696918d95112b5217576f98d_AdobeStock_425653713.jpg', stem: 'product-3', q: 65, maxW: 1200 },
   { file: '696918d9f77435f6456d4498_AdobeStock_279718042.jpg', stem: 'gallery-tl', q: 65, maxW: 1200 },
   { file: '69692680e1a24961d1f6e719_Roam_Repeat_Open_Graph.webp', stem: 'gallery-center', q: 70, maxW: 1200 },
+  // Dedicated social share card (1200×630 JPEG + WebP)
+  {
+    file: '69692680e1a24961d1f6e719_Roam_Repeat_Open_Graph.webp',
+    stem: 'og',
+    q: 82,
+    widths: [1200],
+    formats: ['jpg', 'webp'],
+    og: { width: 1200, height: 630 },
+  },
   { file: '696918dad1b9e8032edc13cf_AdobeStock_279126842.jpg', stem: 'gallery-tr', q: 65, maxW: 1200 },
   { file: '696918daeac6649cb79a45be_AdobeStock_183724962.jpg', stem: 'gallery-bl', q: 65, maxW: 1200 },
   { file: '696918d97a2b99ae86dc8780_AdobeStock_196990370.jpg', stem: 'gallery-br', q: 65, maxW: 1200 },
@@ -124,7 +133,17 @@ async function processImage(job) {
   CACHE[job.stem] = signature;
 
   for (const w of widths) {
-    let pipeline = sharp(source).resize({ width: w, withoutEnlargement: true });
+    let pipeline = sharp(source);
+    if (job.og) {
+      pipeline = pipeline.resize({
+        width: job.og.width,
+        height: job.og.height,
+        fit: 'cover',
+        position: 'centre',
+      });
+    } else {
+      pipeline = pipeline.resize({ width: w, withoutEnlargement: true });
+    }
     for (const fmt of formats) {
       const out = join(outDir, `${job.stem}-${w}.${fmt}`);
       if (!FORCE && !settingsChanged && (await isFresh(out, inputMtime))) {
@@ -140,6 +159,7 @@ async function processImage(job) {
           smartSubsample: true,
           effort: 5,
         });
+      else if (fmt === 'jpg' || fmt === 'jpeg') p = p.jpeg({ quality: job.q || 82, mozjpeg: true });
       else if (fmt === 'png') p = p.png({ compressionLevel: 9 });
       await p.toFile(out);
       const s = await stat(out);
@@ -147,7 +167,9 @@ async function processImage(job) {
     }
   }
 
-  return { stem: job.stem, width: meta.width, height: meta.height, results };
+  const outW = job.og?.width || meta.width;
+  const outH = job.og?.height || meta.height;
+  return { stem: job.stem, width: outW, height: outH, results };
 }
 
 async function copySvgs() {
