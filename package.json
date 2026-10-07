@@ -1,0 +1,21 @@
+{
+  "name": "roamandrepeat",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Optimized static rebuild of Roam and Repeat (mobile-first, lean assets)",
+  "scripts": {
+    "scrape": "node scripts/scrape.mjs",
+    "build": "node scripts/build.mjs",
+    "fonts": "node scripts/fonts.mjs",
+    "dev": "npx --yes serve dist -p 4173",
+    "preview": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "lightningcss": "^1.29.0",
+    "sharp": "^0.33.5",
+    "wrangler": "^4.148.0"
+  }
+}
