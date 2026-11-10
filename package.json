@@ -9,8 +9,8 @@
     "build": "node scripts/build.mjs",
     "fonts": "node scripts/fonts.mjs",
     "dev": "npx --yes serve dist -p 4173",
-    "preview": "npm run build && wrangler dev",
-    "deploy": "npm run build && wrangler deploy"
+    "preview": "npm run build && wrangler pages dev",
+    "deploy": "npm run build && wrangler pages deploy"
   },
   "devDependencies": {
     "esbuild": "^0.25.0",

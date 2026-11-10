@@ -2,10 +2,9 @@
 
 Lean, mobile-first rebuild of [roamandrepeat.webflow.io](https://roamandrepeat.webflow.io/). Keeps the cloud parallax hero, floating image reveals, and gallery lightbox while cutting page weight dramatically.
 
-**Live:** [https://roamandrepeat.elombe.workers.dev](https://roamandrepeat.elombe.workers.dev)  
 **Repo:** [github.com/SWFTstudios/roamandrepeat](https://github.com/SWFTstudios/roamandrepeat)
 
-Pushes to `main` auto-build and deploy via Cloudflare Workers Builds (`npm run build` → `npx wrangler deploy`).
+Pushes to `main` auto-build and deploy via Cloudflare Pages (`npm run build` → `dist/`).
 
 ## Setup
 
@@ -15,8 +14,21 @@ npm run scrape   # pull published assets into source/
 npm run fonts    # download & subset Satoshi
 npm run build    # optimize images + emit dist/
 npm run dev      # preview dist/ at http://localhost:4173
-npm run deploy   # build + deploy to Cloudflare Workers
+npm run deploy   # build + deploy to Cloudflare Pages
 ```
+
+## Cloudflare Pages (Git)
+
+In the Pages project settings:
+
+| Setting | Value |
+|---------|-------|
+| Production branch | `main` |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+
+`wrangler.jsonc` sets `pages_build_output_dir` to `./dist` so Pages does not fall back to `public`.
+
 
 ## Structure
 
